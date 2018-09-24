@@ -9,8 +9,8 @@ UDC_Build:
     shellScript: "jobdsl/build/bash/UDC_Build.sh"
 
     credentials:
-      github: "github"
-    repository: "TODO"
+      github: "66093619-81f0-4a50-8269-109ba789f5f8"
+    repository: "https://github.com/kvendingoldo/spring-petclinic"
 
     gcp:
       cloud:

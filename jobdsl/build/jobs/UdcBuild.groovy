@@ -16,20 +16,20 @@ class UdcBuild {
             }
             wrappers {
               buildName('${BUILD_VERSION}')
-              maskPasswords()
               colorizeOutput()
             }
             scm {
                 git {
                     remote {
                         credentials(jobConfig.job.credentials.github)
-                        github(jobConfig.job.repository)
+                        url(jobConfig.job.repository)
                     }
                     branch('${REF_SPEC}')
                 }
             }
             steps {
-                shell(dslFactory.readFileFromWorkspace(jobConfig.job.shellScript))
+                //shell(dslFactory.readFileFromWorkspace(jobConfig.job.shellScript))
+                shell("mvn clean install")
             }
         }
     }
