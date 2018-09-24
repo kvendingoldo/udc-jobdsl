@@ -1,0 +1,3 @@
+job:
+  type: build
+  folder: "UDC/Build"

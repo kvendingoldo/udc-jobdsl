@@ -1,0 +1,4 @@
+jobTypes:
+  - seed
+  - build
+  - deploy

@@ -1,0 +1,3 @@
+job:
+  type: deploy
+  folder: "UDC/Deploy"

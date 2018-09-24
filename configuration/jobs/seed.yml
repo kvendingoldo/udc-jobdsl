@@ -1,0 +1,4 @@
+job:
+  branch: master
+  type: seed
+  folder: "Seed"

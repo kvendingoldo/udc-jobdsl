@@ -1,0 +1,15 @@
+imports:
+ - basic.yml
+ - jobs/seed.yml
+
+Seed:
+  job:
+    baseName: Seed
+    baseClassName: Seed
+    description: "Seed job"
+    dsl:
+      classpath: lib/*.jar
+      external: "jobdsl/Seed.groovy"
+    credentials:
+      github: "66093619-81f0-4a50-8269-109ba789f5f8"
+    repository: "git@github.com:kvendingoldo/udc-jobdsl.git"

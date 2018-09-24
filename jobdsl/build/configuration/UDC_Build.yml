@@ -1,0 +1,19 @@
+imports:
+ - basic.yml
+ - jobs/build.yml
+
+UDC_Build:
+  job:
+    baseName: UDC_Build
+    baseClassName: UdcBuild
+    shellScript: "jobdsl/build/bash/build.sh"
+
+    credentials:
+      github: "github"
+    repository: "TODO"
+
+    gcp:
+      cloud:
+        name: gcp
+        zone: europe-west1-b
+      project: university-course

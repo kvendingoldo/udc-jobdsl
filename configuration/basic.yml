@@ -1,0 +1,4 @@
+job:
+  daysToKeepBuilds: 15
+  maxOfBuildsToKeep: 30
+  label: k8s
