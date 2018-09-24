@@ -1,0 +1,12 @@
+imports:
+ - basic.yml
+ - jobs/utils.yml
+
+UDC_GCR_Cleaner:
+  job:
+    baseName: UDC_GCR_Cleaner
+    baseClassName: UdcGcrCleaner
+    description: ''
+    shellScript: jobdsl/utils/bash/UDC_GCR_Cleaner.sh
+    instance_zone: europe-west1-b
+    cron: '0 2 * * *'

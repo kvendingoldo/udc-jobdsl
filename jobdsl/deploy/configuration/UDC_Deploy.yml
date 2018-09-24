@@ -1,0 +1,11 @@
+imports:
+ - basic.yml
+ - jobs/deploy.yml
+
+UDC_Deploy:
+  job:
+    baseName: UDC_Deploy_Application
+    baseClassName: UdcDeployApplication
+    description: "Deploy application to target environment"
+    deployScript: "jobdsl/deploy/bash/UDC_Deploy_App.sh"
+    destroyScript: "jobdsl/deploy/bash/UDC_Destroy.sh"

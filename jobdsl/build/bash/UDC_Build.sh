@@ -1,4 +1,9 @@
-mvn versions:set -DnewVersion="${BUILD_VERSION}"
+MVN_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+TIMESTAMP=$(date "+%Y%m%d.%H%M%S")
+VERSION="${MVN_VERSION}-${TIMESTAMP}-${BUILD_NUMBER}"
+VERSION=$(sed 's/-SNAPSHOT//g' <<< ${VERSION})
+
+mvn versions:set -DnewVersion="${VERSION}"
 
 set +x
 USERNAME=$(cat /TODO/files/TODO/secrets/docker/.dockercfg | jq '.["https://index.docker.io/v1/"].username' | sed 's/"//g')
@@ -10,4 +15,4 @@ set -x
 docker pull store/oracle/serverjre:8
 gcloud docker -a
 mvn -C -B deploy -Ddocker.registry.host='gcr.io' -Pimage
-docker rmi $(docker images | grep "${BUILD_VERSION}" | awk '{ print $3 }')
+docker rmi $(docker images | grep "${VERSION}" | awk '{ print $3 }')

@@ -6,7 +6,7 @@ UDC_Build:
   job:
     baseName: UDC_Build
     baseClassName: UdcBuild
-    shellScript: "jobdsl/build/bash/build.sh"
+    shellScript: "jobdsl/build/bash/UDC_Build.sh"
 
     credentials:
       github: "github"
