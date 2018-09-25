@@ -26,7 +26,16 @@ class UdcBuild {
                         url(jobConfig.job.repository)
                     }
                     branch('${REF_SPEC}')
+                    extensions {
+                        wipeOutWorkspace()
+                        submoduleOptions {
+                            recursive()
+                        }
+                    }
                 }
+            }
+            triggers {
+                scm('*/5 * * * *')
             }
             steps {
                 maven {
