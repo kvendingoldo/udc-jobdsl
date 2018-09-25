@@ -41,6 +41,7 @@ class UdcBuild {
                 maven {
                     goals('clean install')
                     goals(' -B')
+                    goals(' -Pimage')
                     mavenInstallation(jobConfig.tools.maven)
                 }
                 //shell(dslFactory.readFileFromWorkspace(jobConfig.job.shellScript))
