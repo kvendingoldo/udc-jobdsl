@@ -1,3 +1,6 @@
+tools:
+  maven: mvn3.5.4
+
 job:
   daysToKeepBuilds: 15
   maxOfBuildsToKeep: 30

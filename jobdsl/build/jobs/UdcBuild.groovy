@@ -28,8 +28,12 @@ class UdcBuild {
                 }
             }
             steps {
+                maven {
+                    goals('clean install')
+                    goals(' -B')
+                    mavenInstallation(jobConfig.tools.maven)
+                }
                 //shell(dslFactory.readFileFromWorkspace(jobConfig.job.shellScript))
-                shell("mvn clean install")
             }
         }
     }
