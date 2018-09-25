@@ -2,21 +2,16 @@ package jobdsl.build.jobs
 
 import com.kvendingoldo.jdcl.core.Functions
 
-class UdcBuild {
+class UdcPreCommit {
     static job(dslFactory, jobConfig) {
         dslFactory.job(Functions.generateJobName(jobConfig)) {
             description(jobConfig.job.description)
             label(jobConfig.job.label)
+            concurrentBuild()
             logRotator(jobConfig.job.daysToKeepBuilds, jobConfig.job.maxOfBuildsToKeep)
-            parameters {
-                stringParam('REF_SPEC', 'refs/heads/master', '')
-            }
-            environmentVariables {
-              //env('BUILD_VERSION', '0.0.0-${BUILD_TIMESTAMP}-${BUILD_NUMBER}')
-            }
             wrappers {
-              buildName('${BUILD_VERSION}')
               colorizeOutput()
+              timestamps()
               preBuildCleanup()
             }
             scm {
@@ -24,8 +19,21 @@ class UdcBuild {
                     remote {
                         credentials(jobConfig.job.credentials.github)
                         url(jobConfig.job.repository)
+                        refspec('+refs/pull/*:refs/remotes/origin/pr/*')
                     }
-                    branch('${REF_SPEC}')
+                    branch('${sha1}')
+                    extensions {
+                        wipeOutWorkspace()
+                        submoduleOptions {
+                            recursive()
+                        }
+                    }
+                }
+            }
+            triggers {
+                githubPullRequest {
+                    cron('*/5 * * * *')
+                    permitAll()
                 }
             }
             steps {
@@ -34,7 +42,6 @@ class UdcBuild {
                     goals(' -B')
                     mavenInstallation(jobConfig.tools.maven)
                 }
-                //shell(dslFactory.readFileFromWorkspace(jobConfig.job.shellScript))
             }
         }
     }

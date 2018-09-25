@@ -17,3 +17,12 @@ UDC_Build:
         name: gcp
         zone: europe-west1-b
       project: university-course
+
+UDC_Precommit:
+  job:
+    baseName: UDC_Precommit
+    baseClassName: UdcPreCommit
+
+    credentials:
+      github: "66093619-81f0-4a50-8269-109ba789f5f8"
+    repository: "https://github.com/kvendingoldo/spring-petclinic"
