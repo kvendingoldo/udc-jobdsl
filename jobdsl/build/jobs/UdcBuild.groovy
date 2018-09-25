@@ -15,7 +15,6 @@ class UdcBuild {
               //env('BUILD_VERSION', '0.0.0-${BUILD_TIMESTAMP}-${BUILD_NUMBER}')
             }
             wrappers {
-              buildName('${BUILD_VERSION}')
               colorizeOutput()
               preBuildCleanup()
             }
@@ -38,13 +37,15 @@ class UdcBuild {
                 scm('*/5 * * * *')
             }
             steps {
+                shell(dslFactory.readFileFromWorkspace(jobConfig.job.shellScript))
                 maven {
-                    goals('clean install')
-                    goals(' -B')
+                    goals('clean deploy')
+                    goals('-B')
+                    goals('-C')
                     goals(' -Pimage')
+                    goals('-Ddocker.registry.host=gcr.io')
                     mavenInstallation(jobConfig.tools.maven)
                 }
-                //shell(dslFactory.readFileFromWorkspace(jobConfig.job.shellScript))
             }
         }
     }
