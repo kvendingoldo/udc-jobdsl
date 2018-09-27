@@ -11,9 +11,6 @@ class UdcBuild {
             parameters {
                 stringParam('REF_SPEC', 'refs/heads/master', '')
             }
-            environmentVariables {
-              //env('BUILD_VERSION', '0.0.0-${BUILD_TIMESTAMP}-${BUILD_NUMBER}')
-            }
             wrappers {
               colorizeOutput()
               preBuildCleanup()

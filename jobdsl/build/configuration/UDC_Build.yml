@@ -9,8 +9,8 @@ UDC_Build:
     shellScript: "jobdsl/build/bash/UDC_Build.sh"
 
     credentials:
-      github: "66093619-81f0-4a50-8269-109ba789f5f8"
-    repository: "https://github.com/kvendingoldo/spring-petclinic"
+      github: "2cadac03-eeb0-43eb-84e7-741e3c1c7664"
+    repository: "git@github.com:kvendingoldo/udc-petclinic.git"
 
     gcp:
       cloud:
@@ -24,5 +24,5 @@ UDC_Precommit:
     baseClassName: UdcPreCommit
 
     credentials:
-      github: "66093619-81f0-4a50-8269-109ba789f5f8"
-    repository: "https://github.com/kvendingoldo/spring-petclinic"
+      github: "2cadac03-eeb0-43eb-84e7-741e3c1c7664"
+    repository: "git@github.com:kvendingoldo/udc-petclinic.git"
