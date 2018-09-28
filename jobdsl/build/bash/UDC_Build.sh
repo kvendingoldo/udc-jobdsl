@@ -7,4 +7,4 @@ VERSION="${MVN_VERSION}-${TIMESTAMP}-${BUILD_NUMBER}"
 
 mvn versions:set -DnewVersion="${VERSION}"
 
-#gcloud docker -a
+gcloud docker -a
