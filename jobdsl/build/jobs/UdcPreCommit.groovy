@@ -32,7 +32,7 @@ class UdcPreCommit {
             }
             triggers {
                 githubPullRequest {
-                    cron('*/5 * * * *')
+                    cron('*/1 * * * *')
                     permitAll()
                 }
             }

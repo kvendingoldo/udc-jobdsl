@@ -31,7 +31,7 @@ class UdcBuild {
                 }
             }
             triggers {
-                scm('*/5 * * * *')
+                scm('*/1 * * * *')
             }
             steps {
                 shell(dslFactory.readFileFromWorkspace(jobConfig.job.shellScript))
