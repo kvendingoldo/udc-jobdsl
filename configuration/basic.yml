@@ -5,3 +5,8 @@ job:
   daysToKeepBuilds: 15
   maxOfBuildsToKeep: 30
   label: k8s
+  gcp:
+    cloud:
+      name: gcp
+      zone: europe-west1-b
+    project: university-course

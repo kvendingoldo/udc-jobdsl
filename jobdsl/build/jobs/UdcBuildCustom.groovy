@@ -2,7 +2,7 @@ package jobdsl.build.jobs
 
 import com.kvendingoldo.jdcl.core.Functions
 
-class UdcBuild {
+class UdcBuildCustom {
     static job(dslFactory, jobConfig) {
         dslFactory.job(Functions.generateJobName(jobConfig)) {
             description(jobConfig.job.description)
@@ -30,12 +30,9 @@ class UdcBuild {
                     }
                 }
             }
-            triggers {
-                scm('*/1 * * * *')
-            }
             steps {
                 shell('gcloud docker -a')
-                shell(dslFactory.readFileFromWorkspace(jobConfig.job.shellScript))
+                shell('mvn versions:set -DnewVersion="0.0.0-$(date \"+%Y%m%d.%H%M%S\")-${BUILD_NUMBER}"')
                 maven {
                     goals('clean deploy')
                     goals('-B')

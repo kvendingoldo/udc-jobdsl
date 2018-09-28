@@ -8,21 +8,12 @@ UDC_Build:
     baseClassName: UdcBuild
     shellScript: "jobdsl/build/bash/UDC_Build.sh"
 
-    credentials:
-      github: "2cadac03-eeb0-43eb-84e7-741e3c1c7664"
-    repository: "git@github.com:kvendingoldo/udc-petclinic.git"
-
-    gcp:
-      cloud:
-        name: gcp
-        zone: europe-west1-b
-      project: university-course
+UDC_Build_Custom:
+  job:
+    baseName: UDC_Build_Custom
+    baseClassName: UdcBuildCustom
 
 UDC_Precommit:
   job:
     baseName: UDC_Precommit
     baseClassName: UdcPreCommit
-
-    credentials:
-      github: "2cadac03-eeb0-43eb-84e7-741e3c1c7664"
-    repository: "git@github.com:kvendingoldo/udc-petclinic.git"
