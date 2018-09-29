@@ -39,7 +39,6 @@ class UdcBuildCustom {
                     goals('-C')
                     goals(' -Pimage')
                     goals('-Ddocker.registry.host=gcr.io')
-                    mavenInstallation(jobConfig.tools.maven)
                 }
             }
         }

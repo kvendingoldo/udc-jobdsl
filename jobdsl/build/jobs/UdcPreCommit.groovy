@@ -40,7 +40,6 @@ class UdcPreCommit {
                 maven {
                     goals('clean install')
                     goals(' -B')
-                    mavenInstallation(jobConfig.tools.maven)
                 }
             }
         }

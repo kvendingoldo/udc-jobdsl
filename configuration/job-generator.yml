@@ -1,3 +1,5 @@
 jobTypes:
-  - seed
   - build
+  - orchestrator
+  - seed
+  - utils

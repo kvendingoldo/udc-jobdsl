@@ -1,4 +1,5 @@
-IMAGE='gcr.io/university-course/TODO'
+set -xe
+IMAGE='gcr.io/university-course/udc-backend-service'
 DELETE_BEFORE="$(date +'%Y-%m-%d' --date='-7 day')"
 
 LIST_OF_OLD_IMAGES=$(gcloud container images list-tags \

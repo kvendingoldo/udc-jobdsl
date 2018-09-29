@@ -1,0 +1,8 @@
+imports:
+ - basic.yml
+ - jobs/orchestrator.yml
+
+UDC_Deploy_Orchestrator:
+  job:
+    baseName: UDC_Deploy_Orchestrator
+    baseClassName: UdcDeployOrchestrator
