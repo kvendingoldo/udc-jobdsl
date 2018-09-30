@@ -9,4 +9,4 @@ println "--> disabling scripts security for jobDSL scripts"
 GlobalConfiguration.all().get(GlobalJobDslSecurityConfiguration.class).useScriptSecurity=false
 ```
 
-Also, you can add this script to init.groovy.d scirpt for automatization
+Also, you can add this script to init.groovy.d script for automatization
