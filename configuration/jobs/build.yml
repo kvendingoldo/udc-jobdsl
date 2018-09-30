@@ -1,6 +1,3 @@
 job:
   type: build
   folder: "UDC/Build"
-  credentials:
-    github: "2cadac03-eeb0-43eb-84e7-741e3c1c7664"
-  repository: "git@github.com:kvendingoldo/udc-petclinic.git"

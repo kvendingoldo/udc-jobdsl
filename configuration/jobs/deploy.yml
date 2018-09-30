@@ -1,3 +1,6 @@
 job:
   type: deploy
   folder: "UDC/Deploy"
+  label: udc-k8s
+  kubernetes:
+    endpoint: "https://35.241.255.58"

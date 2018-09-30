@@ -1,7 +1,7 @@
-#!/bin/bash
+set -xe
 
-set -x
+kubectl config set-context $(kubectl config current-context) --namespace=application
 
-helm del --purge 1-0-0
+helm del --purge petclinic-application || echo 'Release does not exist'
 
 sleep 10
