@@ -11,8 +11,13 @@ class UdcBuildCustom {
             parameters {
                 stringParam('REF_SPEC', 'refs/heads/master', '')
             }
+            environmentVariables {
+                env('GENERATED_VERSION_TYPE', jobConfig.job.generatedVersionType)
+                overrideBuildParameters(true)
+            }
             wrappers {
               colorizeOutput()
+              timestamps()
               preBuildCleanup()
             }
             scm {
@@ -32,13 +37,25 @@ class UdcBuildCustom {
             }
             steps {
                 shell('gcloud docker -a')
-                shell('mvn versions:set -DnewVersion="0.0.0-$(date \"+%Y%m%d.%H%M%S\")-${BUILD_NUMBER}"')
+                shell(dslFactory.readFileFromWorkspace(jobConfig.job.shellScript))
+                envInjectBuilder {
+                    propertiesFilePath('version.properties')
+                    propertiesContent('')
+                }
+                buildNameUpdater {
+                    fromFile(false)
+                    buildName('${VERSION}')
+                    fromMacro(false)
+                    macroTemplate('')
+                    macroFirst(false)
+                }
                 maven {
-                    goals('clean deploy')
-                    goals('-B')
-                    goals('-C')
-                    goals(' -Pimage')
-                    goals('-Ddocker.registry.host=gcr.io')
+                  goals('clean deploy')
+                  goals('-B')
+                  goals('-C')
+                  goals('-q')
+                  goals(' -Pimage')
+                  goals('-Ddocker.registry.host=gcr.io')
                 }
             }
         }

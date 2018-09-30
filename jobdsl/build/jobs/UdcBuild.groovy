@@ -13,6 +13,7 @@ class UdcBuild {
             }
             wrappers {
               colorizeOutput()
+              timestamps()
               preBuildCleanup()
             }
             scm {
@@ -36,13 +37,34 @@ class UdcBuild {
             steps {
                 shell('gcloud docker -a')
                 shell(dslFactory.readFileFromWorkspace(jobConfig.job.shellScript))
+                envInjectBuilder {
+                    propertiesFilePath('version.properties')
+                    propertiesContent('')
+                }
+                buildNameUpdater {
+                    fromFile(false)
+                    buildName('')
+                    fromMacro(true)
+                    macroTemplate('${VERSION}')
+                    macroFirst(false)
+                }
                 maven {
                     goals('clean deploy')
                     goals('-B')
                     goals('-C')
+                    goals('-q')
                     goals(' -Pimage')
                     goals('-Ddocker.registry.host=gcr.io')
                 }
+            }
+            publishers {
+              downstreamParameterized {
+                  trigger('../Orchestrator/UDC_Deploy_Orchestrator') {
+                      parameters {
+                          predefinedProp('VERSION', '${VERSION}')
+                      }
+                  }
+              }
             }
         }
     }

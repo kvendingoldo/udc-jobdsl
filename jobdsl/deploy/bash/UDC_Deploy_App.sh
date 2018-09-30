@@ -1,3 +1,5 @@
+#!/bin/bash
+
 set -xe
 
 kubectl config set-context $(kubectl config current-context) --namespace=application

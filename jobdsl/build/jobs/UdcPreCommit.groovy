@@ -9,6 +9,10 @@ class UdcPreCommit {
             label(jobConfig.job.label)
             concurrentBuild()
             logRotator(jobConfig.job.daysToKeepBuilds, jobConfig.job.maxOfBuildsToKeep)
+            environmentVariables {
+                env('GENERATED_VERSION_TYPE', jobConfig.job.generatedVersionType)
+                overrideBuildParameters(true)
+            }
             wrappers {
               colorizeOutput()
               timestamps()
@@ -37,10 +41,27 @@ class UdcPreCommit {
                 }
             }
             steps {
-                maven {
-                    goals('clean install')
-                    goals(' -B')
-                }
+              shell('gcloud docker -a')
+              shell(dslFactory.readFileFromWorkspace(jobConfig.job.shellScript))
+              envInjectBuilder {
+                  propertiesFilePath('version.properties')
+                  propertiesContent('')
+              }
+              buildNameUpdater {
+                  fromFile(false)
+                  buildName('${VERSION}')
+                  fromMacro(false)
+                  macroTemplate('')
+                  macroFirst(false)
+              }
+              maven {
+                goals('clean install')
+                goals('-B')
+                goals('-C')
+                goals('-q')
+                goals(' -Pimage')
+                goals('-Ddocker.registry.host=gcr.io')
+              }
             }
         }
     }

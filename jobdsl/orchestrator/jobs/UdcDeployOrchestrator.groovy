@@ -20,6 +20,24 @@ class UDC_Deploy_Orchestrator {
                   trim(true)
               }
             }
+            steps {
+              buildNameUpdater {
+                  fromFile(false)
+                  buildName('${VERSION}')
+                  fromMacro(false)
+                  macroTemplate('')
+                  macroFirst(false)
+              }
+            }
+            publishers {
+              downstreamParameterized {
+                  trigger('UDC_Deploy') {
+                      parameters {
+                          predefinedProp('VERSION', '${VERSION}')
+                      }
+                  }
+              }
+            }
         }
     }
 }
