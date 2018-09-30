@@ -20,7 +20,7 @@ class UdcBuild {
                 git {
                     remote {
                         credentials(jobConfig.job.credentials.github)
-                        url(jobConfig.job.repository)
+                        github(jobConfig.job.repository, 'ssh')
                     }
                     branch('${REF_SPEC}')
                     extensions {
@@ -35,6 +35,11 @@ class UdcBuild {
                 scm('*/1 * * * *')
             }
             steps {
+                gitHubSetCommitStatusBuilder {
+                  statusMessage {
+                      content('pending')
+                  }
+                }
                 shell('gcloud docker -a')
                 shell(dslFactory.readFileFromWorkspace(jobConfig.job.shellScript))
                 envInjectBuilder {
@@ -61,7 +66,13 @@ class UdcBuild {
                       }
                   }
               }
+              gitHubCommitNotifier {
+                  resultOnFailure('fail')
+                  statusMessage {
+                    content('ok')
+                  }
+              }
             }
         }
-    }
+      }
 }

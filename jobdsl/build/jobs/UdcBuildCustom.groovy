@@ -24,7 +24,7 @@ class UdcBuildCustom {
                 git {
                     remote {
                         credentials(jobConfig.job.credentials.github)
-                        url(jobConfig.job.repository)
+                        github(jobConfig.job.repository, 'ssh')
                     }
                     branch('${REF_SPEC}')
                     extensions {

@@ -14,4 +14,4 @@ job:
   credentials:
     github: "2cadac03-eeb0-43eb-84e7-741e3c1c7664"
     kubernetes: "udc-k8s"
-  repository: "git@github.com:kvendingoldo/udc-petclinic.git"
+  repository: "kvendingoldo/udc-petclinic"

@@ -16,7 +16,7 @@ class UdcDeployApplication {
                 git {
                     remote {
                         credentials(jobConfig.job.credentials.github)
-                        url(jobConfig.job.repository)
+                        github(jobConfig.job.repository, 'ssh')
                     }
                     branch('${KUBERNETES_REFSPEC}')
                     extensions {
