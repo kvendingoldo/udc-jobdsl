@@ -4,4 +4,4 @@ kubectl config set-context $(kubectl config current-context) --namespace=applica
 
 helm del --purge petclinic-application || echo 'Release does not exist'
 
-sleep 10
+sleep 5

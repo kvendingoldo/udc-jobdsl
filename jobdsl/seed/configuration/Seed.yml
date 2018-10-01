@@ -10,6 +10,4 @@ Seed:
     dsl:
       classpath: lib/*.jar
       external: "jobdsl/Seed.groovy"
-    credentials:
-      github: "2cadac03-eeb0-43eb-84e7-741e3c1c7664"
     repository: "git@github.com:kvendingoldo/udc-jobdsl.git"

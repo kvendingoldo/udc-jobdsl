@@ -46,8 +46,12 @@ class UdcBuild {
                     propertiesFilePath('version.properties')
                     propertiesContent('')
                 }
-                dsl {
-                    text(dslFactory.readFileFromWorkspace('jobdsl/build/groovy/BuildNameSetter.groovy'))
+                buildNameUpdater {
+                    fromFile(false)
+                    buildName('${VERSION}')
+                    fromMacro(false)
+                    macroTemplate('')
+                    macroFirst(false)
                 }
                 maven {
                     goals('clean deploy')

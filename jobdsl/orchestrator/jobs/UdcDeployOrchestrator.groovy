@@ -14,7 +14,7 @@ class UDC_Deploy_Orchestrator {
             }
             parameters {
               stringParam{
-                  name('APP_VERSION')
+                  name('VERSION')
                   defaultValue(jobConfig.project.appVersion)
                   description('Version of udc-petclinic project')
                   trim(true)
