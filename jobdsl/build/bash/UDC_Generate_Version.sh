@@ -1,3 +1,5 @@
+#!/bin/bash
+
 set -x
 
 if [[ "${GENERATED_VERSION_TYPE}" == 'precommit' ]]; then
