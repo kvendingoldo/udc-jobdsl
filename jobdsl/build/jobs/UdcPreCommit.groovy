@@ -55,8 +55,8 @@ class UdcPreCommit {
               buildNameUpdater {
                   fromFile(false)
                   buildName('${VERSION}')
-                  fromMacro(false)
-                  macroTemplate('')
+                  fromMacro(true)
+                  macroTemplate('${VERSION}')
                   macroFirst(false)
               }
               maven {

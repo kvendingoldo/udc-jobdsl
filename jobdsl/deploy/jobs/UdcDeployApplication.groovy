@@ -37,6 +37,13 @@ class UdcDeployApplication {
                 colorizeOutput()
             }
             steps {
+                buildNameUpdater {
+                    fromFile(false)
+                    buildName('${BACKEND_VERSION}')
+                    fromMacro(true)
+                    macroTemplate('${BACKEND_VERSION}')
+                    macroFirst(false)
+                }
                 shell(dslFactory.readFileFromWorkspace(jobConfig.job.destroyScript))
                 shell(dslFactory.readFileFromWorkspace(jobConfig.job.deployScript))
             }
