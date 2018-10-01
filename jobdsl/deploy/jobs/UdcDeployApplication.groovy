@@ -9,7 +9,7 @@ class UdcDeployApplication {
             label(jobConfig.job.label)
             logRotator(jobConfig.job.daysToKeepBuilds, jobConfig.job.maxOfBuildsToKeep)
             parameters {
-                stringParam('BACKEND_VERSION', '', 'Will be used latest version if parameter is empty')
+                stringParam('VERSION', '', 'Will be used latest version if parameter is empty')
                 stringParam('KUBERNETES_REFSPEC', 'refs/heads/master', '')
             }
             scm {
@@ -39,9 +39,9 @@ class UdcDeployApplication {
             steps {
                 buildNameUpdater {
                     fromFile(false)
-                    buildName('${BACKEND_VERSION}')
+                    buildName('${VERSION}')
                     fromMacro(true)
-                    macroTemplate('${BACKEND_VERSION}')
+                    macroTemplate('${VERSION}')
                     macroFirst(false)
                 }
                 shell(dslFactory.readFileFromWorkspace(jobConfig.job.destroyScript))
