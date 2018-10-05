@@ -9,3 +9,12 @@ UDC_GCR_Cleaner:
     description: 'GCR Cleaner'
     shellScript: jobdsl/utils/bash/UDC_GCR_Cleaner.sh
     cron: '0 2 * * *'
+
+
+UDC_Test:
+  job:
+    baseName: UDC_Test
+    baseClassName: UdcTest
+    authors:
+      asharov: asharov_value
+      kvendingoldo: kvendingoldo_map
