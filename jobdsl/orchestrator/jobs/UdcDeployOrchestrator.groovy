@@ -31,7 +31,12 @@ class UDC_Deploy_Orchestrator {
             }
             publishers {
               downstreamParameterized {
-                  trigger('../Deploy/UDC_Deploy_Application') {
+                  trigger('../Deploy/UDC_Destroy') {
+                      parameters {
+                          predefinedProp('VERSION', '${VERSION}')
+                      }
+                  }
+                  trigger('../Deploy/UDC_Deploy') {
                       parameters {
                           predefinedProp('VERSION', '${VERSION}')
                       }
