@@ -4,7 +4,12 @@ imports:
 
 UDC_Deploy:
   job:
-    baseName: UDC_Deploy_Application
-    baseClassName: UdcDeployApplication
-    deployScript: "jobdsl/deploy/bash/UDC_Deploy_App.sh"
-    destroyScript: "jobdsl/deploy/bash/UDC_Destroy.sh"
+    baseName: UDC_Deploy
+    baseClassName: UdcDeploy
+    shellScript: "jobdsl/deploy/bash/UDC_Deploy.sh"
+
+UDC_Destroy:
+  job:
+    baseName: UDC_Destroy
+    baseClassName: UdcDestroy
+    shellScript: "jobdsl/deploy/bash/UDC_Destroy.sh"
