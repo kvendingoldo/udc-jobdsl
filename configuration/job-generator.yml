@@ -1,6 +1,4 @@
 jobTypes:
   - build
-  - deploy
-  - orchestrator
   - seed
   - utils

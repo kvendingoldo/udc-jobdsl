@@ -12,7 +12,8 @@ else
 fi
 
 TIMESTAMP=$(date "+%Y%m%d.%H%M%S")
-VERSION="${MVN_VERSION}-${TIMESTAMP}-${BUILD_NUMBER}"
+GIT_HASH=$(git rev-parse --short=5 HEAD)
+VERSION="${MVN_VERSION}-${TIMESTAMP}-${GIT_HASH}"
 
 mvn versions:set -DnewVersion="${VERSION}"
 echo -n "VERSION=${VERSION}" > version.properties

@@ -9,16 +9,16 @@ class UdcBuildCustom {
             label(jobConfig.job.label)
             logRotator(jobConfig.job.daysToKeepBuilds, jobConfig.job.maxOfBuildsToKeep)
             parameters {
-                stringParam('REF_SPEC', 'refs/heads/master', '')
+                stringParam('BRANCH', 'master', '')
             }
             environmentVariables {
                 env('GENERATED_VERSION_TYPE', jobConfig.job.generatedVersionType)
                 overrideBuildParameters(true)
             }
             wrappers {
-              colorizeOutput()
-              timestamps()
-              preBuildCleanup()
+                colorizeOutput()
+                timestamps()
+                preBuildCleanup()
             }
             scm {
                 git {
@@ -26,7 +26,7 @@ class UdcBuildCustom {
                         credentials(jobConfig.job.credentials.github)
                         github(jobConfig.job.repository, 'ssh')
                     }
-                    branch('${REF_SPEC}')
+                    branch('refs/heads/${BRANCH}')
                     extensions {
                         wipeOutWorkspace()
                         submoduleOptions {
@@ -37,7 +37,7 @@ class UdcBuildCustom {
             }
             steps {
                 shell('gcloud docker -a')
-                shell(dslFactory.readFileFromWorkspace(jobConfig.job.shellScript))
+                shell(dslFactory.readFileFromWorkspace(jobConfig.job.versionGeneratorScript))
                 envInjectBuilder {
                     propertiesFilePath('version.properties')
                     propertiesContent('')

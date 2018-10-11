@@ -14,9 +14,9 @@ class UdcPreCommit {
                 overrideBuildParameters(true)
             }
             wrappers {
-              colorizeOutput()
-              timestamps()
-              preBuildCleanup()
+                colorizeOutput()
+                timestamps()
+                preBuildCleanup()
             }
             scm {
                 git {
@@ -47,7 +47,7 @@ class UdcPreCommit {
                 }
               }
               shell('gcloud docker -a')
-              shell(dslFactory.readFileFromWorkspace(jobConfig.job.shellScript))
+              shell(dslFactory.readFileFromWorkspace(jobConfig.job.versionGeneratorScript))
               envInjectBuilder {
                   propertiesFilePath('version.properties')
                   propertiesContent('')

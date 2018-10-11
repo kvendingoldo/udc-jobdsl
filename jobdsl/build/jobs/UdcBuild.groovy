@@ -9,12 +9,55 @@ class UdcBuild {
             label(jobConfig.job.label)
             logRotator(jobConfig.job.daysToKeepBuilds, jobConfig.job.maxOfBuildsToKeep)
             parameters {
-                stringParam('REF_SPEC', 'refs/heads/master', '')
+                stringParam('BRANCH', 'master', '')
+            }
+            properties {
+            		promotions{
+              			promotion {
+                        name('dev')
+                        icon('star-purple')
+                        actions {
+                            gitHubSetCommitStatusBuilder {
+                                statusMessage {
+                                    content('promotion is pending')
+                                }
+                            }
+                            shell('gcloud docker -a')
+                            envInjectBuilder {
+                                propertiesFilePath('version.properties')
+                                propertiesContent('')
+                            }
+                            shell(dslFactory.readFileFromWorkspace(jobConfig.job.versionGeneratorScript))
+                            buildNameUpdater {
+                                fromFile(false)
+                                buildName('${VERSION}')
+                                fromMacro(true)
+                                macroTemplate('${VERSION}')
+                                macroFirst(false)
+                            }
+                            maven {
+                                goals('clean deploy')
+                                goals('-B')
+                                goals('-C')
+                                goals('-q')
+                                goals(' -Pimage')
+                                goals('-Ddocker.registry.host=gcr.io')
+                                goals('-Ddocker.repository=university-course/rc')
+                            }
+                            gitHubCommitNotifier {
+                                resultOnFailure('fail')
+                                statusMessage {
+                                    content('promotion is done')
+                                }
+                            }
+            		        }
+                    }
+          	    }
             }
             wrappers {
-              colorizeOutput()
-              timestamps()
-              preBuildCleanup()
+                colorizeOutput()
+                timestamps()
+                preBuildCleanup()
             }
             scm {
                 git {
@@ -22,7 +65,7 @@ class UdcBuild {
                         credentials(jobConfig.job.credentials.github)
                         github(jobConfig.job.repository, 'ssh')
                     }
-                    branch('${REF_SPEC}')
+                    branch('^(?!origin/${BRANCH}|origin/release-$).*')
                     extensions {
                         wipeOutWorkspace()
                         submoduleOptions {
@@ -37,11 +80,11 @@ class UdcBuild {
             steps {
                 gitHubSetCommitStatusBuilder {
                   statusMessage {
-                      content('pending')
+                      content('build is pending')
                   }
                 }
                 shell('gcloud docker -a')
-                shell(dslFactory.readFileFromWorkspace(jobConfig.job.shellScript))
+                shell(dslFactory.readFileFromWorkspace(jobConfig.job.versionGeneratorScript))
                 envInjectBuilder {
                     propertiesFilePath('version.properties')
                     propertiesContent('')
@@ -73,7 +116,7 @@ class UdcBuild {
               gitHubCommitNotifier {
                   resultOnFailure('fail')
                   statusMessage {
-                    content('ok')
+                    content('build is done')
                   }
               }
             }
