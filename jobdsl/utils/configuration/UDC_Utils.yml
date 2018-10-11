@@ -10,11 +10,22 @@ UDC_GCR_Cleaner:
     shellScript: jobdsl/utils/bash/UDC_GCR_Cleaner.sh
     cron: '0 2 * * *'
 
-
-UDC_Test:
+UDC_Create_Release_Branch:
   job:
-    baseName: UDC_Test
-    baseClassName: UdcTest
-    authors:
-      asharov: asharov_value
-      kvendingoldo: kvendingoldo_map
+    baseName: UDC_Create_Release_Branch
+    baseClassName: UdcCreateReleaseBranch
+    description: 'Job creates release branch'
+    shellScript: jobdsl/utils/bash/UDC_Create_Release_Branch.sh
+
+UDC_Create_RC:
+  job:
+    baseName: UDC_Create_RC
+    baseClassName: UdcCreateRC
+    description: 'Job creates release candidate'
+
+UDC_Update_POM_Version:
+  job:
+    baseName: UDC_Update_POM_Version
+    baseClassName: UdcUpdatePomVersion
+    description: 'Job bump versions in POMs'
+    shellScript: jobdsl/utils/bash/UDC_Update_POM_Version.sh

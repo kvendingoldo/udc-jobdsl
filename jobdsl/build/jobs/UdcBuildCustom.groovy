@@ -37,9 +37,10 @@ class UdcBuildCustom {
             }
             steps {
                 shell('gcloud docker -a')
+                shell(dslFactory.readFileFromWorkspace(jobConfig.job.variablesGeneratorScript))
                 shell(dslFactory.readFileFromWorkspace(jobConfig.job.versionGeneratorScript))
                 envInjectBuilder {
-                    propertiesFilePath('version.properties')
+                    propertiesFilePath('variables.txt')
                     propertiesContent('')
                 }
                 buildNameUpdater {
@@ -50,12 +51,13 @@ class UdcBuildCustom {
                     macroFirst(false)
                 }
                 maven {
-                  goals('clean deploy')
-                  goals('-B')
-                  goals('-C')
-                  goals('-q')
-                  goals(' -Pimage')
-                  goals('-Ddocker.registry.host=gcr.io')
+                    goals('clean deploy')
+                    goals('-B')
+                    goals('-C')
+                    goals('-q')
+                    goals(' -Pimage')
+                    goals('-Ddocker.registry.host=gcr.io')
+                    goals('-Ddocker.repository=university-course/udc/dev/${RELEASE_FAMILY}')
                 }
             }
         }

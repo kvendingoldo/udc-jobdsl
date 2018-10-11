@@ -2,14 +2,29 @@ imports:
  - basic.yml
  - jobs/deploy.yml
 
-UDC_Deploy:
+UDC_Deploy_LLE:
   job:
-    baseName: UDC_Deploy
+    baseName: UDC_Deploy_LLE
     baseClassName: UdcDeploy
     shellScript: "jobdsl/deploy/bash/UDC_Deploy.sh"
+    releaseName: stage
 
-UDC_Destroy:
+UDC_Destroy_LLE:
   job:
-    baseName: UDC_Destroy
+    baseName: UDC_Destroy_LLE
     baseClassName: UdcDestroy
     shellScript: "jobdsl/deploy/bash/UDC_Destroy.sh"
+
+UDC_Deploy_PROD:
+  job:
+    baseName: UDC_Deploy_PROD
+    baseClassName: UdcDeploy
+    shellScript: "jobdsl/deploy/bash/UDC_Deploy.sh"
+    releaseName: production
+
+UDC_Destroy_PROD:
+  job:
+    baseName: UDC_DestroyPROD
+    baseClassName: UdcDestroy
+    shellScript: "jobdsl/deploy/bash/UDC_Destroy.sh"
+

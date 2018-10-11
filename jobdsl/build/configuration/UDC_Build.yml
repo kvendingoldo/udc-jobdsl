@@ -7,6 +7,14 @@ UDC_Build:
     baseName: UDC_Build
     baseClassName: UdcBuild
     versionGeneratorScript: "jobdsl/build/bash/UDC_Generate_Version.sh"
+    variablesGeneratorScript: "jobdsl/build/bash/UDC_Generate_Variables.sh"
+
+UDC_Build_Release:
+  job:
+    baseName: UDC_Build_Release
+    baseClassName: UdcBuildRelease
+    versionGeneratorScript: "jobdsl/build/bash/UDC_Generate_Version.sh"
+    variablesGeneratorScript: "jobdsl/build/bash/UDC_Generate_Variables.sh"
 
 UDC_Build_Custom:
   job:
@@ -14,10 +22,12 @@ UDC_Build_Custom:
     baseClassName: UdcBuildCustom
     generatedVersionType: custom
     versionGeneratorScript: "jobdsl/build/bash/UDC_Generate_Version.sh"
+    variablesGeneratorScript: "jobdsl/build/bash/UDC_Generate_Variables.sh"
 
-UDC_Precommit:
+UDC_Build_Precommit:
   job:
-    baseName: UDC_Precommit
+    baseName: UDC_Build_Precommit
     baseClassName: UdcPreCommit
     generatedVersionType: precommit
     versionGeneratorScript: "jobdsl/build/bash/UDC_Generate_Version.sh"
+    variablesGeneratorScript: "jobdsl/build/bash/UDC_Generate_Variables.sh"

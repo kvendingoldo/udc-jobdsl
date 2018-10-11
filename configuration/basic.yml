@@ -1,6 +1,5 @@
 project:
   name: udc
-  appVersion: 1.0.0-SNAPSHOT
 
 job:
   daysToKeepBuilds: 15

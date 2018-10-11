@@ -5,7 +5,12 @@ set -xe
 kubectl create namespace "${RELEASE_NAME}"
 kubectl config set-context $(kubectl config current-context) --namespace="${RELEASE_NAME}"
 
-[[ -z ${VERSION} ]] && VERSION=$(gcloud container images list-tags gcr.io/university-course/udc-backend-service --limit=1 --format='get(tags)')
+
+[[ -z ${VERSION} ]]
+
+
+# TODO: reserve IP
+
 
 cd udc-helm
 helm install \

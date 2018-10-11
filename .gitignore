@@ -1,0 +1,33 @@
+# MacOS
+.DS_Store
+
+# Maven
+target/*
+.classpath
+.settings/*
+test-output/
+*.releaseBackup
+*.versionsBackup
+
+# IDEA
+.idea
+*.iml
+*.log
+
+# VIM
+*~
+*.swp
+*.swo
+*.swn
+*.swl
+*.swm
+*.swj
+*.swk
+
+# Secrets
+k8s-gcr-auth-ro.json
+
+# Misc
+.project
+.sts4-cache/
+_site/

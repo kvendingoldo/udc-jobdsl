@@ -2,16 +2,39 @@ package jobdsl.build.jobs
 
 import com.kvendingoldo.jdcl.core.Functions
 
-class UdcPreCommit {
+class UdcBuildRelease {
     static job(dslFactory, jobConfig) {
         dslFactory.job(Functions.generateJobName(jobConfig)) {
             description(jobConfig.job.description)
             label(jobConfig.job.label)
-            concurrentBuild()
             logRotator(jobConfig.job.daysToKeepBuilds, jobConfig.job.maxOfBuildsToKeep)
-            environmentVariables {
-                env('GENERATED_VERSION_TYPE', jobConfig.job.generatedVersionType)
-                overrideBuildParameters(true)
+            properties {
+                promotions {
+                    promotion {
+                        name('create-release-candidate')
+                        icon('star-purple')
+                        actions {
+                            copyArtifacts('${PROMOTED_JOB_NAME}') {
+                                includePatterns('variables.txt')
+                                buildSelector {
+                                    buildNumber('${PROMOTED_NUMBER}')
+                                }
+                            }
+                            downstreamParameterized {
+                                trigger('../Utils/UDC_Create_RC') {
+                                    block {
+                                        buildStepFailure('UNSTABLE')
+                                        failure('UNSTABLE')
+                                        unstable('UNSTABLE')
+                                    }
+                                    parameters {
+                                        propertiesFile('${WORKSPACE}/variables.txt', true)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
             wrappers {
                 colorizeOutput()
@@ -23,9 +46,8 @@ class UdcPreCommit {
                     remote {
                         credentials(jobConfig.job.credentials.github)
                         github(jobConfig.job.repository, 'ssh')
-                        refspec('+refs/pull/*:refs/remotes/origin/pr/*')
                     }
-                    branch('${sha1}')
+                    branch('origin/release-*')
                     extensions {
                         wipeOutWorkspace()
                         submoduleOptions {
@@ -35,10 +57,7 @@ class UdcPreCommit {
                 }
             }
             triggers {
-                githubPullRequest {
-                    cron('*/1 * * * *')
-                    permitAll()
-                }
+                scm('*/1 * * * *')
             }
             steps {
                 gitHubSetCommitStatusBuilder {
@@ -46,7 +65,6 @@ class UdcPreCommit {
                         content('building...')
                     }
                 }
-                shell('gcloud docker -a')
                 shell(dslFactory.readFileFromWorkspace(jobConfig.job.variablesGeneratorScript))
                 shell(dslFactory.readFileFromWorkspace(jobConfig.job.versionGeneratorScript))
                 envInjectBuilder {
@@ -60,13 +78,16 @@ class UdcPreCommit {
                     macroTemplate('${VERSION}')
                     macroFirst(false)
                 }
+                shell('gcloud docker -a')
                 maven {
-                    goals('clean install')
+                    goals('clean deploy')
                     goals('-B')
                     goals('-C')
                     goals('-q')
                     goals(' -Pimage')
                     goals('-Ddocker.registry.host=gcr.io')
+                    goals('-Ddocker.repository=university-course/udc/dev/${RELEASE_FAMILY}')
+                    injectBuildVariables(false)
                 }
             }
             publishers {
@@ -75,6 +96,11 @@ class UdcPreCommit {
                     statusMessage {
                         content('build is completed')
                     }
+                }
+
+                archiveArtifacts {
+                    exclude('')
+                    pattern('variables.txt')
                 }
             }
         }

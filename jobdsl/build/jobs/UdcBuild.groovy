@@ -8,51 +8,43 @@ class UdcBuild {
             description(jobConfig.job.description)
             label(jobConfig.job.label)
             logRotator(jobConfig.job.daysToKeepBuilds, jobConfig.job.maxOfBuildsToKeep)
-            parameters {
-                stringParam('BRANCH', 'master', '')
-            }
             properties {
-            		promotions{
-              			promotion {
-                        name('dev')
-                        icon('star-purple')
+                promotions {
+                    promotion {
+                        name('create-release-branch')
+                        icon('star-green')
                         actions {
-                            gitHubSetCommitStatusBuilder {
-                                statusMessage {
-                                    content('promotion is pending')
+                            copyArtifacts('${PROMOTED_JOB_NAME}') {
+                                includePatterns('variables.txt')
+                                buildSelector {
+                                    buildNumber('${PROMOTED_NUMBER}')
                                 }
                             }
-                            shell('gcloud docker -a')
-                            envInjectBuilder {
-                                propertiesFilePath('version.properties')
-                                propertiesContent('')
-                            }
-                            shell(dslFactory.readFileFromWorkspace(jobConfig.job.versionGeneratorScript))
-                            buildNameUpdater {
-                                fromFile(false)
-                                buildName('${VERSION}')
-                                fromMacro(true)
-                                macroTemplate('${VERSION}')
-                                macroFirst(false)
-                            }
-                            maven {
-                                goals('clean deploy')
-                                goals('-B')
-                                goals('-C')
-                                goals('-q')
-                                goals(' -Pimage')
-                                goals('-Ddocker.registry.host=gcr.io')
-                                goals('-Ddocker.repository=university-course/rc')
-                            }
-                            gitHubCommitNotifier {
-                                resultOnFailure('fail')
-                                statusMessage {
-                                    content('promotion is done')
+                            downstreamParameterized {
+                                trigger('../Utils/UDC_Create_Release_Branch') {
+                                    block {
+                                        buildStepFailure('UNSTABLE')
+                                        failure('UNSTABLE')
+                                        unstable('UNSTABLE')
+                                    }
+                                    parameters {
+                                        propertiesFile('${WORKSPACE}/variables.txt', true)
+                                    }
+                                }
+                                trigger('../Utils/UDC_Update_POM_Version') {
+                                    block {
+                                        buildStepFailure('UNSTABLE')
+                                        failure('UNSTABLE')
+                                        unstable('UNSTABLE')
+                                    }
+                                    parameters {
+                                        propertiesFile('${WORKSPACE}/variables.txt', true)
+                                    }
                                 }
                             }
-            		        }
+                        }
                     }
-          	    }
+                }
             }
             wrappers {
                 colorizeOutput()
@@ -65,7 +57,7 @@ class UdcBuild {
                         credentials(jobConfig.job.credentials.github)
                         github(jobConfig.job.repository, 'ssh')
                     }
-                    branch('^(?!origin/${BRANCH}|origin/release-$).*')
+                    branch('refs/heads/master')
                     extensions {
                         wipeOutWorkspace()
                         submoduleOptions {
@@ -79,14 +71,14 @@ class UdcBuild {
             }
             steps {
                 gitHubSetCommitStatusBuilder {
-                  statusMessage {
-                      content('build is pending')
-                  }
+                    statusMessage {
+                        content('building...')
+                    }
                 }
-                shell('gcloud docker -a')
+                shell(dslFactory.readFileFromWorkspace(jobConfig.job.variablesGeneratorScript))
                 shell(dslFactory.readFileFromWorkspace(jobConfig.job.versionGeneratorScript))
                 envInjectBuilder {
-                    propertiesFilePath('version.properties')
+                    propertiesFilePath('variables.txt')
                     propertiesContent('')
                 }
                 buildNameUpdater {
@@ -96,6 +88,7 @@ class UdcBuild {
                     macroTemplate('${VERSION}')
                     macroFirst(false)
                 }
+                shell('gcloud docker -a')
                 maven {
                     goals('clean deploy')
                     goals('-B')
@@ -103,23 +96,29 @@ class UdcBuild {
                     goals('-q')
                     goals(' -Pimage')
                     goals('-Ddocker.registry.host=gcr.io')
+                    goals('-Ddocker.repository=university-course/udc/dev/${RELEASE_FAMILY}')
+                    injectBuildVariables(false)
                 }
             }
             publishers {
-              downstreamParameterized {
-                  trigger('../Orchestrator/UDC_Deploy_Orchestrator') {
-                      parameters {
-                          predefinedProp('VERSION', '${VERSION}')
-                      }
-                  }
-              }
-              gitHubCommitNotifier {
-                  resultOnFailure('fail')
-                  statusMessage {
-                    content('build is done')
-                  }
-              }
+                archiveArtifacts {
+                    exclude('')
+                    pattern('variables.txt')
+                }
+                downstreamParameterized {
+                    trigger('../Orchestrator/UDC_Deploy_Orchestrator') {
+                        parameters {
+                            predefinedProp('VERSION', '${VERSION}')
+                        }
+                    }
+                }
+                gitHubCommitNotifier {
+                    resultOnFailure('fail')
+                    statusMessage {
+                        content('build is completed')
+                    }
+                }
             }
         }
-      }
+    }
 }

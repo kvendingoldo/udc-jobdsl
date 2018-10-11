@@ -1,17 +1,18 @@
-package jobdsl.build.jobs
+package jobdsl.utils.jobs
 
 import com.kvendingoldo.jdcl.core.Functions
 
-class UdcPreCommit {
+class UdcCreateRC {
     static job(dslFactory, jobConfig) {
         dslFactory.job(Functions.generateJobName(jobConfig)) {
             description(jobConfig.job.description)
             label(jobConfig.job.label)
-            concurrentBuild()
             logRotator(jobConfig.job.daysToKeepBuilds, jobConfig.job.maxOfBuildsToKeep)
-            environmentVariables {
-                env('GENERATED_VERSION_TYPE', jobConfig.job.generatedVersionType)
-                overrideBuildParameters(true)
+            parameters {
+                stringParam('COMMIT', '', '')
+                stringParam('BRANCH', '', '')
+                stringParam('VERSION', '', '')
+                stringParam('RELEASE_FAMILY', '', '')
             }
             wrappers {
                 colorizeOutput()
@@ -23,9 +24,8 @@ class UdcPreCommit {
                     remote {
                         credentials(jobConfig.job.credentials.github)
                         github(jobConfig.job.repository, 'ssh')
-                        refspec('+refs/pull/*:refs/remotes/origin/pr/*')
                     }
-                    branch('${sha1}')
+                    branch('refs/remotes/${BRANCH}')
                     extensions {
                         wipeOutWorkspace()
                         submoduleOptions {
@@ -34,24 +34,12 @@ class UdcPreCommit {
                     }
                 }
             }
-            triggers {
-                githubPullRequest {
-                    cron('*/1 * * * *')
-                    permitAll()
-                }
-            }
             steps {
+                shell('git checkout -f "${COMMIT}"')
                 gitHubSetCommitStatusBuilder {
                     statusMessage {
-                        content('building...')
+                        content('rc is building...')
                     }
-                }
-                shell('gcloud docker -a')
-                shell(dslFactory.readFileFromWorkspace(jobConfig.job.variablesGeneratorScript))
-                shell(dslFactory.readFileFromWorkspace(jobConfig.job.versionGeneratorScript))
-                envInjectBuilder {
-                    propertiesFilePath('variables.txt')
-                    propertiesContent('')
                 }
                 buildNameUpdater {
                     fromFile(false)
@@ -60,20 +48,23 @@ class UdcPreCommit {
                     macroTemplate('${VERSION}')
                     macroFirst(false)
                 }
+                shell('gcloud docker -a')
                 maven {
-                    goals('clean install')
+                    goals('clean deploy')
                     goals('-B')
                     goals('-C')
                     goals('-q')
                     goals(' -Pimage')
                     goals('-Ddocker.registry.host=gcr.io')
+                    goals('-Ddocker.repository=university-course/udc/rc/${RELEASE_FAMILY}')
+                    injectBuildVariables(false)
                 }
             }
             publishers {
                 gitHubCommitNotifier {
                     resultOnFailure('fail')
                     statusMessage {
-                        content('build is completed')
+                        content('rc is ready')
                     }
                 }
             }
