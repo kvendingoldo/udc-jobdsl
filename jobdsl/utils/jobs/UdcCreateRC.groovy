@@ -36,6 +36,9 @@ class UdcCreateRC {
             }
             steps {
                 shell('git checkout -f "${COMMIT}"')
+                maven {
+                    goals('versions:set -DnewVersion="${VERSION}"')
+                }
                 gitHubSetCommitStatusBuilder {
                     statusMessage {
                         content('rc is building...')
