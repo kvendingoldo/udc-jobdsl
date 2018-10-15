@@ -35,3 +35,6 @@ helm install \
   --name "${RELEASE_NAME}" \
   --namespace "${RELEASE_NAME}" \
   udc
+
+
+echo "RELEASE_NAME=${RELEASE_NAME}" > variables.txt

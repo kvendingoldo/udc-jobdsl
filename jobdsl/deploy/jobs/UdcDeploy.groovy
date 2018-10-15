@@ -42,14 +42,18 @@ class UdcDeploy {
                 colorizeOutput()
             }
             steps {
+                shell(dslFactory.readFileFromWorkspace(jobConfig.job.shellScript))
+                envInjectBuilder {
+                    propertiesFilePath('variables.txt')
+                    propertiesContent('')
+                }
                 buildNameUpdater {
                     fromFile(false)
-                    buildName('${VERSION}')
+                    buildName('${RELEASE_NAME}')
                     fromMacro(true)
-                    macroTemplate('${VERSION}')
+                    macroTemplate('${RELEASE_NAME}')
                     macroFirst(false)
                 }
-                shell(dslFactory.readFileFromWorkspace(jobConfig.job.shellScript))
             }
         }
     }
