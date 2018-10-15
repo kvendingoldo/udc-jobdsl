@@ -1,6 +1,6 @@
 def build = Thread.currentThread().executable
-def endpoint = build.buildVariableResolver.resolve('ENDPOINT')
-def version = build.buildVariableResolver.resolve('VERSION')
+def endpoint = build.getEnvironment(listener).get('ENDPOINT')
+def version = build.getEnvironment(listener).get('VERSION')
 
 
 def output = ''
