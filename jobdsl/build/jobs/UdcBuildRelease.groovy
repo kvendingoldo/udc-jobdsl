@@ -47,7 +47,7 @@ class UdcBuildRelease {
                         credentials(jobConfig.job.credentials.github)
                         github(jobConfig.job.repository, 'ssh')
                     }
-                    branch('origin/release-*')
+                    branch(':.+release-\\d+.\\d+')
                     extensions {
                         wipeOutWorkspace()
                         submoduleOptions {
