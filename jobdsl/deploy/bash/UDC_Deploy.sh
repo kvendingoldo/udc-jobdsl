@@ -39,5 +39,6 @@ helm install \
 
 
 touch ${WORKSPACE}/variables.txt
-echo "RELEASE_NAME=${RELEASE_NAME}" >> variables.txt
-echo "ENDPOINT=${ENDPOINT}" >> variables.txt
+echo "RELEASE_NAME=${RELEASE_ALIAS}" >> ${WORKSPACE}/variables.txt
+echo "VERSION=${VERSION}" >> ${WORKSPACE}/variables.txt
+echo "ENDPOINT=${ENDPOINT}" >> ${WORKSPACE}/variables.txt
