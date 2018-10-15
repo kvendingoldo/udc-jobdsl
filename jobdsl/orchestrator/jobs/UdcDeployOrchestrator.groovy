@@ -32,11 +32,21 @@ class UDC_Deploy_Orchestrator {
             publishers {
               downstreamParameterized {
                   trigger('../Deploy/UDC_Destroy_LLE') {
+                      block {
+                          buildStepFailure('UNSTABLE')
+                          failure('UNSTABLE')
+                          unstable('UNSTABLE')
+                      }
                       parameters {
                           predefinedProp('VERSION', '${VERSION}')
                       }
                   }
                   trigger('../Deploy/UDC_Deploy_LLE') {
+                      block {
+                          buildStepFailure('UNSTABLE')
+                          failure('UNSTABLE')
+                          unstable('UNSTABLE')
+                      }
                       parameters {
                           predefinedProp('VERSION', '${VERSION}')
                       }
