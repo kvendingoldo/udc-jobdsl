@@ -32,7 +32,7 @@ ENDPOINT=$(gcloud compute addresses list | grep "^${RELEASE_ALIAS}" | awk '{ pri
 cd udc-helm
 helm install \
   --set container.version="${VERSION}" \
-  --set container.images="${LATEST_RELEASE_FAMILY}/udc-backend-service" \
+  --set container.image="${LATEST_RELEASE_FAMILY}/udc-backend-service" \
   --set endpoint="${ENDPOINT}" \
   --name "${RELEASE_NAME}" \
   --namespace "${RELEASE_NAME}" \
