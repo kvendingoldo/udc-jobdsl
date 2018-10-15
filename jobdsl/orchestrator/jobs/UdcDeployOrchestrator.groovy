@@ -6,52 +6,73 @@ class UDC_Deploy_Orchestrator {
     static job(dslFactory, jobConfig) {
         dslFactory.job(Functions.generateJobName(jobConfig)) {
             logRotator(jobConfig.job.daysToKeepBuilds,
-                       jobConfig.job.maxOfBuildsToKeep)
+                    jobConfig.job.maxOfBuildsToKeep)
             wrappers {
                 colorizeOutput()
                 timestamps()
                 preBuildCleanup()
             }
             parameters {
-              stringParam{
-                  name('VERSION')
-                  defaultValue('')
-                  description('Version of udc-petclinic project')
-                  trim(true)
-              }
+                stringParam {
+                    name('VERSION')
+                    defaultValue('')
+                    description('Version of udc-petclinic project')
+                    trim(true)
+                }
             }
             steps {
-              buildNameUpdater {
-                  fromFile(false)
-                  buildName('${VERSION}')
-                  fromMacro(false)
-                  macroTemplate('')
-                  macroFirst(false)
-              }
+                systemGroovy {
+                    source {
+                        stringSystemScriptSource {
+                            script {
+                                script('jobdsl/common/groovy/printJobVariablesTable.groovy')
+                                sandbox(false)
+                            }
+                        }
+                    }
+                }
+                systemGroovy {
+                    source {
+                        stringSystemScriptSource {
+                            script {
+                                script('jobdsl/common/groovy/validateParamertes.groovy')
+                                sandbox(false)
+                            }
+                        }
+
+                    }
+                }
+                buildNameUpdater {
+                    fromFile(false)
+                    buildName('${VERSION}')
+                    fromMacro(false)
+                    macroTemplate('')
+                    macroFirst(false)
+                }
             }
             publishers {
-              downstreamParameterized {
-                  trigger('../Deploy/UDC_Destroy_LLE') {
-                      block {
-                          buildStepFailure('UNSTABLE')
-                          failure('UNSTABLE')
-                          unstable('UNSTABLE')
-                      }
-                      parameters {
-                          predefinedProp('VERSION', '${VERSION}')
-                      }
-                  }
-                  trigger('../Deploy/UDC_Deploy_LLE') {
-                      block {
-                          buildStepFailure('UNSTABLE')
-                          failure('UNSTABLE')
-                          unstable('UNSTABLE')
-                      }
-                      parameters {
-                          predefinedProp('VERSION', '${VERSION}')
-                      }
-                  }
-              }
+                downstreamParameterized {
+                    trigger('../Deploy/UDC_Destroy_LLE') {
+                        block {
+                            buildStepFailure('UNSTABLE')
+                            failure('UNSTABLE')
+                            unstable('UNSTABLE')
+                        }
+                        parameters {
+                            predefinedProp('VERSION', '${VERSION}')
+                        }
+                    }
+                    trigger('../Deploy/UDC_Deploy_LLE') {
+                        block {
+                            buildStepFailure('UNSTABLE')
+                            failure('UNSTABLE')
+                            unstable('UNSTABLE')
+                        }
+                        parameters {
+                            predefinedProp('VERSION', '${VERSION}')
+                        }
+                    }
+                }
             }
         }
     }

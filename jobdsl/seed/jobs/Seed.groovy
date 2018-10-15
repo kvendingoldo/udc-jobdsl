@@ -28,6 +28,27 @@ class Seed {
                 scm('*/1 * * * *')
             }
             steps {
+                systemGroovy {
+                    source {
+                        stringSystemScriptSource {
+                            script {
+                                script('jobdsl/common/groovy/printJobVariablesTable.groovy')
+                                sandbox(false)
+                            }
+                        }
+                    }
+                }
+                systemGroovy {
+                    source {
+                        stringSystemScriptSource {
+                            script {
+                                script('jobdsl/common/groovy/validateParamertes.groovy')
+                                sandbox(false)
+                            }
+                        }
+
+                    }
+                }
                 dsl {
                     external(jobConfig.job.dsl.external)
                     removeAction('DELETE')

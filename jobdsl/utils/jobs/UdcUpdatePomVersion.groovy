@@ -32,6 +32,27 @@ class UdcUpdatePomVersion {
                 }
             }
             steps {
+                systemGroovy {
+                    source {
+                        stringSystemScriptSource {
+                            script {
+                                script('jobdsl/common/groovy/printJobVariablesTable.groovy')
+                                sandbox(false)
+                            }
+                        }
+                    }
+                }
+                systemGroovy {
+                    source {
+                        stringSystemScriptSource {
+                            script {
+                                script('jobdsl/common/groovy/validateParamertes.groovy')
+                                sandbox(false)
+                            }
+                        }
+
+                    }
+                }
                 shell(dslFactory.readFileFromWorkspace(jobConfig.job.shellScript))
             }
             publishers {

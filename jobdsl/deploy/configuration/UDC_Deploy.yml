@@ -7,6 +7,7 @@ UDC_Deploy_LLE:
     baseName: UDC_Deploy_LLE
     baseClassName: UdcDeploy
     shellScript: "jobdsl/deploy/bash/UDC_Deploy.sh"
+    setDescriptionScript: "jobdsl/deploy/groovy/setDescription.groovy"
     releaseName: stage
 
 UDC_Destroy_LLE:
@@ -21,6 +22,7 @@ UDC_Deploy_PROD:
     baseName: UDC_Deploy_PROD
     baseClassName: UdcDeploy
     shellScript: "jobdsl/deploy/bash/UDC_Deploy.sh"
+    setDescriptionScript: "jobdsl/deploy/groovy/setDescription.groovy"
     releaseName: production
 
 UDC_Destroy_PROD:

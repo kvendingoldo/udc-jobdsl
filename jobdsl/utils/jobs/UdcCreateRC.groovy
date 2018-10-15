@@ -35,6 +35,27 @@ class UdcCreateRC {
                 }
             }
             steps {
+                systemGroovy {
+                    source {
+                        stringSystemScriptSource {
+                            script {
+                                script('jobdsl/common/groovy/printJobVariablesTable.groovy')
+                                sandbox(false)
+                            }
+                        }
+                    }
+                }
+                systemGroovy {
+                    source {
+                        stringSystemScriptSource {
+                            script {
+                                script('jobdsl/common/groovy/validateParamertes.groovy')
+                                sandbox(false)
+                            }
+                        }
+
+                    }
+                }
                 shell('git checkout -f "${COMMIT}"')
                 maven {
                     goals('versions:set -DnewVersion="${VERSION}"')

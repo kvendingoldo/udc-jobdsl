@@ -42,9 +42,29 @@ class UdcDeploy {
                 colorizeOutput()
             }
             steps {
+                systemGroovy {
+                    source {
+                        stringSystemScriptSource {
+                            script {
+                                script('jobdsl/common/groovy/printJobVariablesTable.groovy')
+                                sandbox(false)
+                            }
+                        }
+                    }
+                }
+                systemGroovy {
+                    source {
+                        stringSystemScriptSource {
+                            script {
+                                script('jobdsl/common/groovy/validateParamertes.groovy')
+                                sandbox(false)
+                            }
+                        }
+                    }
+                }
                 shell(dslFactory.readFileFromWorkspace(jobConfig.job.shellScript))
                 envInjectBuilder {
-                    propertiesFilePath('variables.txt')
+                    propertiesFilePath('${WORKSPACE}/variables.txt')
                     propertiesContent('')
                 }
                 buildNameUpdater {
@@ -53,6 +73,16 @@ class UdcDeploy {
                     fromMacro(true)
                     macroTemplate('${RELEASE_NAME}')
                     macroFirst(false)
+                }
+                systemGroovy {
+                    source {
+                        stringSystemScriptSource {
+                            script {
+                                script(dslFactory.readFileFromWorkspace(jobConfig.job.setDescriptionScript))
+                                sandbox(false)
+                            }
+                        }
+                    }
                 }
             }
         }

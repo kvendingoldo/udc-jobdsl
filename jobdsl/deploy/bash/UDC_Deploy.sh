@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -xe
 
@@ -37,4 +37,7 @@ helm install \
   udc
 
 
-echo "RELEASE_NAME=${RELEASE_NAME}" > variables.txt
+
+touch ${WORKSPACE}/variables.txt
+echo "RELEASE_NAME=${RELEASE_NAME}" >> variables.txt
+echo "ENDPOINT=${ENDPOINT}" >> variables.txt
