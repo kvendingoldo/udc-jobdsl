@@ -62,6 +62,7 @@ class UdcBuildCustom {
 
                     }
                 }
+                shell(dslFactory.readFileFromWorkspace('jobdsl/common/bash/emailValidator.sh'))
                 shell('gcloud docker -a')
                 shell(dslFactory.readFileFromWorkspace(jobConfig.job.variablesGeneratorScript))
                 shell(dslFactory.readFileFromWorkspace(jobConfig.job.versionGeneratorScript))

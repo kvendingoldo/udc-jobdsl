@@ -65,6 +65,7 @@ class UdcBuildRelease {
                         content('building...')
                     }
                 }
+                shell(dslFactory.readFileFromWorkspace('jobdsl/common/bash/emailValidator.sh'))
                 shell(dslFactory.readFileFromWorkspace(jobConfig.job.variablesGeneratorScript))
                 shell(dslFactory.readFileFromWorkspace(jobConfig.job.versionGeneratorScript))
                 envInjectBuilder {

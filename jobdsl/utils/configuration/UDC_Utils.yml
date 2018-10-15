@@ -29,3 +29,10 @@ UDC_Update_POM_Version:
     baseClassName: UdcUpdatePomVersion
     description: 'Job bump versions in POMs'
     shellScript: jobdsl/utils/bash/UDC_Update_POM_Version.sh
+
+UDC_Git_Statistics:
+  job:
+    baseName: UDC_Git_Statistics
+    baseClassName: UdcGitStatistic
+    cron: '0 0 * * 6'
+    shellScript: jobdsl/utils/bash/UDC_Git_Statistic.sh
