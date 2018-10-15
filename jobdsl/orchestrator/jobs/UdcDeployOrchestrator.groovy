@@ -31,12 +31,12 @@ class UDC_Deploy_Orchestrator {
             }
             publishers {
               downstreamParameterized {
-                  trigger('../Deploy/UDC_Destroy') {
+                  trigger('../Deploy/UDC_Destroy_LLE') {
                       parameters {
                           predefinedProp('VERSION', '${VERSION}')
                       }
                   }
-                  trigger('../Deploy/UDC_Deploy') {
+                  trigger('../Deploy/UDC_Deploy_LLE') {
                       parameters {
                           predefinedProp('VERSION', '${VERSION}')
                       }

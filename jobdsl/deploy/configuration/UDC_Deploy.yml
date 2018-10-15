@@ -14,6 +14,7 @@ UDC_Destroy_LLE:
     baseName: UDC_Destroy_LLE
     baseClassName: UdcDestroy
     shellScript: "jobdsl/deploy/bash/UDC_Destroy.sh"
+    releaseName: stage
 
 UDC_Deploy_PROD:
   job:
@@ -27,4 +28,5 @@ UDC_Destroy_PROD:
     baseName: UDC_DestroyPROD
     baseClassName: UdcDestroy
     shellScript: "jobdsl/deploy/bash/UDC_Destroy.sh"
+    releaseName: production
 
