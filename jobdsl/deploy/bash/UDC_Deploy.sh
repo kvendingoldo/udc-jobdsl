@@ -23,7 +23,7 @@ fi
 RELEASE_ALIAS="udc-backend-${RELEASE_NAME}"
 
 if ! gcloud compute addresses list | grep -q "^${RELEASE_ALIAS}"; then
-    gcloud compute addresses create --region="${REGION_K8S}" "${RELEASE_ALIAS}"
+    gcloud compute addresses create --region="${GCP_REGION}" "${RELEASE_ALIAS}"
 fi
 
 ENDPOINT=$(gcloud compute addresses list | grep "^${RELEASE_ALIAS}" | awk '{ print $3 }')

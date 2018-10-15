@@ -13,6 +13,10 @@ class UdcDeploy {
                 stringParam('RELEASE_NAME', jobConfig.job.releaseName, '')
                 stringParam('KUBERNETES_BRANCH', 'master', '')
             }
+            environmentVariables {
+                env('GCP_REGION', jobConfig.job.gcp.region)
+                overrideBuildParameters(true)
+            }
             scm {
                 git {
                     remote {
