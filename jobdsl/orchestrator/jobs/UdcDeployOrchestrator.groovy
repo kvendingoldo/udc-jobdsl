@@ -42,15 +42,6 @@ class UDC_Deploy_Orchestrator {
 
                     }
                 }
-                buildNameUpdater {
-                    fromFile(false)
-                    buildName('${VERSION}')
-                    fromMacro(false)
-                    macroTemplate('')
-                    macroFirst(false)
-                }
-            }
-            publishers {
                 downstreamParameterized {
                     trigger('../Deploy/UDC_Destroy_LLE') {
                         block {
@@ -72,6 +63,13 @@ class UDC_Deploy_Orchestrator {
                             predefinedProp('VERSION', '${VERSION}')
                         }
                     }
+                }
+                buildNameUpdater {
+                    fromFile(false)
+                    buildName('${VERSION}')
+                    fromMacro(false)
+                    macroTemplate('')
+                    macroFirst(false)
                 }
             }
         }
