@@ -41,27 +41,6 @@ class UdcPreCommit {
                 }
             }
             steps {
-                systemGroovy {
-                    source {
-                        stringSystemScriptSource {
-                            script {
-                                script(dslFactory.readFileFromWorkspace('jobdsl/common/groovy/printJobVariablesTable.groovy'))
-                                sandbox(false)
-                            }
-                        }
-                    }
-                }
-                systemGroovy {
-                    source {
-                        stringSystemScriptSource {
-                            script {
-                                script(dslFactory.readFileFromWorkspace('jobdsl/common/groovy/validateParamertes.groovy'))
-                                sandbox(false)
-                            }
-                        }
-
-                    }
-                }
                 gitHubSetCommitStatusBuilder {
                     statusMessage {
                         content('building...')

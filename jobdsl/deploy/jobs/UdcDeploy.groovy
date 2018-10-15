@@ -9,9 +9,24 @@ class UdcDeploy {
             label(jobConfig.job.label)
             logRotator(jobConfig.job.daysToKeepBuilds, jobConfig.job.maxOfBuildsToKeep)
             parameters {
-                stringParam('VERSION', '', 'Will be used latest if parameter is empty (only LLE)')
-                stringParam('RELEASE_NAME', jobConfig.job.releaseName, '')
-                stringParam('KUBERNETES_BRANCH', 'master', '')
+                stringParam {
+                    name('VERSION')
+                    defaultValue('')
+                    description('Will be used latest version if parameter is empty')
+                    trim(true)
+                }
+                stringParam {
+                    name('RELEASE_NAME')
+                    defaultValue('stage')
+                    description('')
+                    trim(true)
+                }
+                stringParam {
+                    name('KUBERNETES_BRANCH')
+                    defaultValue('master')
+                    description('')
+                    trim(true)
+                }
             }
             environmentVariables {
                 env('GCP_REGION', jobConfig.job.gcp.cloud.region)

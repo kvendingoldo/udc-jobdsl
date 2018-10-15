@@ -9,8 +9,18 @@ class UdcCreateReleaseBranch {
             label(jobConfig.job.label)
             logRotator(jobConfig.job.daysToKeepBuilds, jobConfig.job.maxOfBuildsToKeep)
             parameters {
-                stringParam('COMMIT', '', '')
-                stringParam('RELEASE_FAMILY', '', '')
+                stringParam {
+                    name('COMMIT')
+                    defaultValue(jobConfig.job.branch)
+                    description('')
+                    trim(true)
+                }
+                stringParam {
+                    name('RELEASE_FAMILY')
+                    defaultValue(jobConfig.job.branch)
+                    description('')
+                    trim(true)
+                }
             }
             wrappers {
                 colorizeOutput()

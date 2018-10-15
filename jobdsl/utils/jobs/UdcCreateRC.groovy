@@ -9,10 +9,30 @@ class UdcCreateRC {
             label(jobConfig.job.label)
             logRotator(jobConfig.job.daysToKeepBuilds, jobConfig.job.maxOfBuildsToKeep)
             parameters {
-                stringParam('COMMIT', '', '')
-                stringParam('BRANCH', '', '')
-                stringParam('VERSION', '', '')
-                stringParam('RELEASE_FAMILY', '', '')
+                stringParam {
+                    name('COMMIT')
+                    defaultValue(jobConfig.job.branch)
+                    description('')
+                    trim(true)
+                }
+                stringParam {
+                    name('BRANCH')
+                    defaultValue(jobConfig.job.branch)
+                    description('')
+                    trim(true)
+                }
+                stringParam {
+                    name('VERSION')
+                    defaultValue(jobConfig.job.branch)
+                    description('')
+                    trim(true)
+                }
+                stringParam {
+                    name('RELEASE_FAMILY')
+                    defaultValue(jobConfig.job.branch)
+                    description('')
+                    trim(true)
+                }
             }
             wrappers {
                 colorizeOutput()

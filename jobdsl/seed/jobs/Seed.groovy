@@ -8,7 +8,12 @@ class Seed {
             description(jobConfig.job.description)
             logRotator(jobConfig.job.daysToKeepBuilds, jobConfig.job.maxOfBuildsToKeep)
             parameters {
-                stringParam('BRANCH', jobConfig.job.branch, '')
+                stringParam {
+                    name('BRANCH')
+                    defaultValue(jobConfig.job.branch)
+                    description('')
+                    trim(true)
+                }
             }
             wrappers {
                 preBuildCleanup()

@@ -9,7 +9,12 @@ class UdcBuildCustom {
             label(jobConfig.job.label)
             logRotator(jobConfig.job.daysToKeepBuilds, jobConfig.job.maxOfBuildsToKeep)
             parameters {
-                stringParam('BRANCH', 'master', '')
+                stringParam {
+                    name('BRANCH')
+                    defaultValue('master')
+                    description('')
+                    trim(true)
+                }
             }
             environmentVariables {
                 env('GENERATED_VERSION_TYPE', jobConfig.job.generatedVersionType)

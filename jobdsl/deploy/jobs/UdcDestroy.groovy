@@ -9,9 +9,24 @@ class UdcDestroy {
             label(jobConfig.job.label)
             logRotator(jobConfig.job.daysToKeepBuilds, jobConfig.job.maxOfBuildsToKeep)
             parameters {
-                stringParam('VERSION', '', 'Will be used latest version if parameter is empty')
-                stringParam('RELEASE_NAME', 'stage', '')
-                stringParam('KUBERNETES_BRANCH', 'master', '')
+                stringParam {
+                    name('VERSION')
+                    defaultValue('')
+                    description('Will be used latest version if parameter is empty')
+                    trim(true)
+                }
+                stringParam {
+                    name('RELEASE_NAME')
+                    defaultValue('stage')
+                    description('')
+                    trim(true)
+                }
+                stringParam {
+                    name('KUBERNETES_BRANCH')
+                    defaultValue('master')
+                    description('')
+                    trim(true)
+                }
             }
             scm {
                 git {

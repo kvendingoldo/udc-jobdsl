@@ -9,7 +9,12 @@ class UdcUpdatePomVersion {
             label(jobConfig.job.label)
             logRotator(jobConfig.job.daysToKeepBuilds, jobConfig.job.maxOfBuildsToKeep)
             parameters {
-                stringParam('RELEASE_FAMILY', '', '')
+                stringParam {
+                    name('RELEASE_FAMILY')
+                    defaultValue(jobConfig.job.branch)
+                    description('')
+                    trim(true)
+                }
             }
             wrappers {
                 colorizeOutput()
