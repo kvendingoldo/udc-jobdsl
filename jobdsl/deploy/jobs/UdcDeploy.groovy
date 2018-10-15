@@ -46,7 +46,7 @@ class UdcDeploy {
                     source {
                         stringSystemScriptSource {
                             script {
-                                script('jobdsl/common/groovy/printJobVariablesTable.groovy')
+                                script(dslFactory.readFileFromWorkspace('jobdsl/common/groovy/printJobVariablesTable.groovy'))
                                 sandbox(false)
                             }
                         }
@@ -56,10 +56,11 @@ class UdcDeploy {
                     source {
                         stringSystemScriptSource {
                             script {
-                                script('jobdsl/common/groovy/validateParamertes.groovy')
+                                script(dslFactory.readFileFromWorkspace('jobdsl/common/groovy/validateParamertes.groovy'))
                                 sandbox(false)
                             }
                         }
+
                     }
                 }
                 shell(dslFactory.readFileFromWorkspace(jobConfig.job.shellScript))

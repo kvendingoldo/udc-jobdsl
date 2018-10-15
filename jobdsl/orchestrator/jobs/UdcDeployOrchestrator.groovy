@@ -25,7 +25,7 @@ class UDC_Deploy_Orchestrator {
                     source {
                         stringSystemScriptSource {
                             script {
-                                script('jobdsl/common/groovy/printJobVariablesTable.groovy')
+                                script(dslFactory.readFileFromWorkspace('jobdsl/common/groovy/printJobVariablesTable.groovy'))
                                 sandbox(false)
                             }
                         }
@@ -35,7 +35,7 @@ class UDC_Deploy_Orchestrator {
                     source {
                         stringSystemScriptSource {
                             script {
-                                script('jobdsl/common/groovy/validateParamertes.groovy')
+                                script(dslFactory.readFileFromWorkspace('jobdsl/common/groovy/validateParamertes.groovy'))
                                 sandbox(false)
                             }
                         }
