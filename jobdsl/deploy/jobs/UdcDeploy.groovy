@@ -14,7 +14,7 @@ class UdcDeploy {
                 stringParam('KUBERNETES_BRANCH', 'master', '')
             }
             environmentVariables {
-                env('GCP_REGION', jobConfig.job.gcp.region)
+                env('GCP_REGION', jobConfig.job.gcp.cloud.region)
                 overrideBuildParameters(true)
             }
             scm {
