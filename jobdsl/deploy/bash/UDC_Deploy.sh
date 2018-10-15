@@ -2,6 +2,9 @@
 
 set -xe
 
+LATEST_RELEASE_FAMILY=''
+RELEASE_ALIAS="udc-backend-${RELEASE_NAME}"
+
 kubectl create namespace "${RELEASE_NAME}"
 kubectl config set-context $(kubectl config current-context) --namespace="${RELEASE_NAME}"
 
@@ -20,8 +23,6 @@ if [[ -z ${VERSION} ]]; then
     fi
 fi
 
-RELEASE_ALIAS="udc-backend-${RELEASE_NAME}"
-
 if ! gcloud compute addresses list | grep -q "^${RELEASE_ALIAS}"; then
     gcloud compute addresses create --region="${GCP_REGION}" "${RELEASE_ALIAS}"
 fi
@@ -31,6 +32,7 @@ ENDPOINT=$(gcloud compute addresses list | grep "^${RELEASE_ALIAS}" | awk '{ pri
 cd udc-helm
 helm install \
   --set container.version="${VERSION}" \
+  --set container.images="${LATEST_RELEASE_FAMILY}/udc-backend-service" \
   --set endpoint="${ENDPOINT}" \
   --name "${RELEASE_NAME}" \
   --namespace "${RELEASE_NAME}" \
