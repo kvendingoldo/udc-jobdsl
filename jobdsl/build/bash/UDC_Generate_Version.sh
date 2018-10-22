@@ -16,5 +16,8 @@ GIT_HASH=$(git rev-parse --short=5 HEAD)
 VERSION="${MVN_VERSION}-${TIMESTAMP}-${GIT_HASH}"
 
 mvn versions:set -DnewVersion="${VERSION}"
-echo "VERSION=${VERSION}" >> ${WORKSPACE}/variables.txt
-echo "RELEASE_FAMILY=${MVN_VERSION}" >> ${WORKSPACE}/variables.txt
+
+{
+  echo "VERSION=${VERSION}"
+  echo "RELEASE_FAMILY=${MVN_VERSION}"
+} >> "${WORKSPACE}/variables.txt"

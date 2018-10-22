@@ -9,12 +9,15 @@ class UdcBuildRelease {
             label(jobConfig.job.label)
             logRotator(jobConfig.job.daysToKeepBuilds, jobConfig.job.maxOfBuildsToKeep)
             properties {
+                copyArtifactPermission {
+                  projectNames('*')
+                }
                 promotions {
                     promotion {
                         name('create-release-candidate')
                         icon('star-purple')
                         actions {
-                            copyArtifacts('${PROMOTED_JOB_NAME}') {
+                            copyArtifacts('${PROMOTED_JOB_FULL_NAME}') {
                                 includePatterns('variables.txt')
                                 buildSelector {
                                     buildNumber('${PROMOTED_NUMBER}')
@@ -47,7 +50,7 @@ class UdcBuildRelease {
                         credentials(jobConfig.job.credentials.github)
                         github(jobConfig.job.repository, 'ssh')
                     }
-                    branch(':.+release-\\d+.\\d+')
+                    branch(':origin/release-\\d+.\\d+')
                     extensions {
                         wipeOutWorkspace()
                         submoduleOptions {

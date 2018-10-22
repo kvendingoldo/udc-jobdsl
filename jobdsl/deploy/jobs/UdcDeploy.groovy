@@ -17,7 +17,7 @@ class UdcDeploy {
                 }
                 stringParam {
                     name('RELEASE_NAME')
-                    defaultValue('stage')
+                    defaultValue(jobConfig.job.releaseName)
                     description('')
                     trim(true)
                 }

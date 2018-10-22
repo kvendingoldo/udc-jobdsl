@@ -2,25 +2,27 @@
 
 set -xe
 
-LATEST_RELEASE_FAMILY=''
 RELEASE_ALIAS="udc-backend-${RELEASE_NAME}"
+RELEASE_FAMILY=''
 
 kubectl create namespace "${RELEASE_NAME}"
 kubectl config set-context $(kubectl config current-context) --namespace="${RELEASE_NAME}"
 
 if [[ -z ${VERSION} ]]; then
-    if [[ ${RELEASE_NAME} != 'production' ]];
-    then
-        LATEST_RELEASE_FAMILY=$(gcloud container images list \
+    if [[ ${RELEASE_NAME} != 'production' ]]; then
+        IMAGE_FAMILY=$(gcloud container images list \
             --repository=gcr.io/university-course/udc/dev \
             --sort-by=~NAME \
             --format='get(name)' \
             --limit 1)
-        VERSION=$(gcloud container images list-tags ${LATEST_RELEASE_FAMILY}/udc-backend-service --limit=1 --format='get(tags)')
+        VERSION=$(gcloud container images list-tags ${IMAGE_FAMILY}/udc-backend-service --limit=1 --format='get(tags)')
+        RELEASE_FAMILY=$(echo ${IMAGE_FAMILY} | sed -e 's/.*\///g')
     else
         echo '[Error] version is empty'
-        exit 0
+        exit 1
     fi
+else
+  RELEASE_FAMILY=$(echo ${VERSION} | sed -e 's/-.*//')
 fi
 
 if ! gcloud compute addresses list | grep -q "^${RELEASE_ALIAS}"; then
@@ -32,15 +34,14 @@ ENDPOINT=$(gcloud compute addresses list | grep "^${RELEASE_ALIAS}" | awk '{ pri
 cd udc-helm
 helm install \
   --set container.version="${VERSION}" \
-  --set container.image="${LATEST_RELEASE_FAMILY}/udc-backend-service" \
+  --set container.image="gcr.io/university-course/udc/dev/${RELEASE_FAMILY}/udc-backend-service" \
   --set endpoint="${ENDPOINT}" \
   --name "${RELEASE_NAME}" \
   --namespace "${RELEASE_NAME}" \
   udc
 
-
-
-touch ${WORKSPACE}/variables.txt
-echo "RELEASE_NAME=${RELEASE_ALIAS}" >> ${WORKSPACE}/variables.txt
-echo "VERSION=${VERSION}" >> ${WORKSPACE}/variables.txt
-echo "ENDPOINT=${ENDPOINT}" >> ${WORKSPACE}/variables.txt
+{
+  echo "RELEASE_NAME=${RELEASE_ALIAS}"
+  echo "VERSION=${VERSION}"
+  echo "ENDPOINT=${ENDPOINT}"
+} > "${WORKSPACE}/variables.txt"

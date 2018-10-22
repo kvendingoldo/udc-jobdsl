@@ -17,7 +17,7 @@ class UdcDestroy {
                 }
                 stringParam {
                     name('RELEASE_NAME')
-                    defaultValue('stage')
+                    defaultValue(jobConfig.job.releaseName)
                     description('')
                     trim(true)
                 }
@@ -27,6 +27,10 @@ class UdcDestroy {
                     description('')
                     trim(true)
                 }
+            }
+            environmentVariables {
+                env('GCP_REGION', jobConfig.job.gcp.cloud.region)
+                overrideBuildParameters(true)
             }
             scm {
                 git {

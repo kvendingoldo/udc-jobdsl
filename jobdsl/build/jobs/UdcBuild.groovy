@@ -9,6 +9,9 @@ class UdcBuild {
             label(jobConfig.job.label)
             logRotator(jobConfig.job.daysToKeepBuilds, jobConfig.job.maxOfBuildsToKeep)
             properties {
+                copyArtifactPermission {
+                  projectNames('*')
+                }
                 promotions {
                     promotion {
                         name('create-release-branch')
@@ -110,6 +113,7 @@ class UdcBuild {
                     trigger('../Orchestrator/UDC_Deploy_Orchestrator') {
                         parameters {
                             predefinedProp('VERSION', '${VERSION}')
+                            predefinedProp('RELEASE_NAME', 'stage')
                         }
                     }
                 }

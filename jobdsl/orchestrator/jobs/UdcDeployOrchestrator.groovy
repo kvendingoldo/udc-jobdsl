@@ -19,6 +19,12 @@ class UDC_Deploy_Orchestrator {
                     description('Version of udc-petclinic project')
                     trim(true)
                 }
+                stringParam {
+                    name('RELEASE_NAME')
+                    defaultValue('stage')
+                    description('')
+                    trim(true)
+                }
             }
             steps {
                 systemGroovy {
@@ -51,6 +57,7 @@ class UDC_Deploy_Orchestrator {
                         }
                         parameters {
                             predefinedProp('VERSION', '${VERSION}')
+                            predefinedProp('RELEASE_NAME', '${RELEASE_NAME}')
                         }
                     }
                     trigger('../Deploy/UDC_Deploy_LLE') {
@@ -61,6 +68,7 @@ class UDC_Deploy_Orchestrator {
                         }
                         parameters {
                             predefinedProp('VERSION', '${VERSION}')
+                            predefinedProp('RELEASE_NAME', '${RELEASE_NAME}')
                         }
                     }
                 }
